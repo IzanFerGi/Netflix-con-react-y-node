@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -18,9 +19,9 @@ model User {
   password      String
   name          String?
   createdAt     DateTime  @default(now())
-  isVerified    Boolean   @default(false)    // email verification flag
+  isVerified    Boolean   @default(false)
   profiles      Profile[]
-  sessions      Session[]                            // for refresh tokens sessions
+  sessions      Session[]
   @@index([email])
 }
 
@@ -32,18 +33,19 @@ model Profile {
   avatarUrl String?
   favorites Favorite[]
   watchlist WatchHistory[]
-  @@unique([userId,name])    // unique profile names per user
+  ratings   Rating[]
+  @@unique([userId,name])
 }
 
 model Session {
-  id         Int      @id @default(autoincrement())
-  user       User     @relation(fields: [userId], references: [id])
-  userId     Int
+  id           Int      @id @default(autoincrement())
+  user         User     @relation(fields: [userId], references: [id])
+  userId       Int
   refreshToken String
-  userAgent  String?
-  ip         String?
-  createdAt  DateTime @default(now())
-  expiresAt  DateTime
+  userAgent    String?
+  ip           String?
+  createdAt    DateTime @default(now())
+  expiresAt    DateTime
 }
 
 model Genre {
@@ -58,14 +60,16 @@ model Media {
   description String?
   type        MediaType
   year        Int?
-  duration    Int?         // seconds (for movies / episodes)
+  duration    Int?
   createdAt   DateTime     @default(now())
   slug        String?      @unique
-  assets      MediaAsset[]
-  seasons     Season[]     // if type == SERIES
+  assets      MediaAsset[]      // inverse relation for MediaAsset.media
+  seasons     Season[]
   genres      MediaGenre[]
   favorites   Favorite[]
   ratings     Rating[]
+  watchHistory WatchHistory[]   // inverse for WatchHistory.media
+  casts       Cast[]            // inverse for Cast.media
   @@index([title])
 }
 
@@ -81,12 +85,14 @@ model MediaGenre {
 
 model MediaAsset {
   id        Int    @id @default(autoincrement())
-  media     Media  @relation(fields: [mediaId], references: [id])
-  mediaId   Int
-  type      String // "video","trailer","thumbnail","subtitle"
-  url       String // S3 URL or CDN URL
-  quality   String? // e.g. 720p,1080p
-  language  String? // for subtitles
+  media     Media? @relation(fields: [mediaId], references: [id])
+  mediaId   Int?
+  episode   Episode? @relation(fields: [episodeId], references: [id])
+  episodeId Int?
+  type      String
+  url       String
+  quality   String?
+  language  String?
 }
 
 model Season {
@@ -105,7 +111,7 @@ model Episode {
   number    Int
   title     String
   duration  Int?
-  assets    MediaAsset[]
+  assets    MediaAsset[]   // inverse created via MediaAsset.episode
   @@unique([seasonId, number])
 }
 
@@ -125,19 +131,19 @@ model WatchHistory {
   profileId   Int
   media       Media    @relation(fields: [mediaId], references: [id])
   mediaId     Int
-  episodeId   Int?     // optional if tracking episodes
+  episodeId   Int?
   playedAt    DateTime @default(now())
-  position    Int      @default(0) // seconds position
+  position    Int      @default(0)
   @@index([profileId, mediaId])
 }
 
 model Rating {
-  id        Int    @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   profile   Profile @relation(fields: [profileId], references: [id])
   profileId Int
   media     Media   @relation(fields: [mediaId], references: [id])
   mediaId   Int
-  value     Int    // 1..5 or 1..10
+  value     Int
   createdAt DateTime @default(now())
   @@unique([profileId, mediaId])
 }
@@ -155,7 +161,6 @@ model Cast {
   mediaId   Int
   person    Person @relation(fields: [personId], references: [id])
   personId  Int
-  role      String // actor, director, writer...
-  character String? // if actor
+  role      String
+  character String?
 }
-
