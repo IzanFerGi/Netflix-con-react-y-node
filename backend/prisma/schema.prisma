@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  email      String    @unique
+  password   String
+  name       String?
+  createdAt  DateTime  @default(now())
+  favorites  Favorite[]
+}
+
+model Genre {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  medias    MediaGenre[]
+}
+
+model Media {
+  id          Int          @id @default(autoincrement())
+  title       String
+  description String?
+  type        MediaType
+  year        Int?
+  filename    String?
+  createdAt   DateTime     @default(now())
+  genres      MediaGenre[]
+  favorites   Favorite[]
+}
+
+model MediaGenre {
+  id       Int   @id @default(autoincrement())
+  media    Media @relation(fields: [mediaId], references: [id])
+  mediaId  Int
+  genre    Genre @relation(fields: [genreId], references: [id])
+  genreId  Int
+
+  @@unique([mediaId, genreId])
+}
+
+model Favorite {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  media     Media    @relation(fields: [mediaId], references: [id])
+  mediaId   Int
+  createdAt DateTime @default(now())
+
+  @@unique([userId, mediaId])
+}
+
+enum MediaType {
+  MOVIE
+  SERIES
+}

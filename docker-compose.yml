@@ -1,4 +1,15 @@
 services:
+  db:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: netflix
+      POSTGRES_PASSWORD: netflix_pass_secure
+      POSTGRES_DB: netflixdb
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
   backend:
     build: ./backend
     ports:
