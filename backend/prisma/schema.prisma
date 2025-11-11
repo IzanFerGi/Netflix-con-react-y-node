@@ -7,19 +7,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum MediaType {
+  MOVIE
+  SERIES
+}
+
 model User {
-  id         Int       @id @default(autoincrement())
-  email      String    @unique
-  password   String
-  name       String?
-  createdAt  DateTime  @default(now())
-  favorites  Favorite[]
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  password      String
+  name          String?
+  createdAt     DateTime  @default(now())
+  isVerified    Boolean   @default(false)    // email verification flag
+  profiles      Profile[]
+  sessions      Session[]                            // for refresh tokens sessions
+  @@index([email])
+}
+
+model Profile {
+  id        Int     @id @default(autoincrement())
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
+  name      String
+  avatarUrl String?
+  favorites Favorite[]
+  watchlist WatchHistory[]
+  @@unique([userId,name])    // unique profile names per user
+}
+
+model Session {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int
+  refreshToken String
+  userAgent  String?
+  ip         String?
+  createdAt  DateTime @default(now())
+  expiresAt  DateTime
 }
 
 model Genre {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  medias    MediaGenre[]
+  id     Int          @id @default(autoincrement())
+  name   String       @unique
+  medias MediaGenre[]
 }
 
 model Media {
@@ -28,10 +58,15 @@ model Media {
   description String?
   type        MediaType
   year        Int?
-  filename    String?
+  duration    Int?         // seconds (for movies / episodes)
   createdAt   DateTime     @default(now())
+  slug        String?      @unique
+  assets      MediaAsset[]
+  seasons     Season[]     // if type == SERIES
   genres      MediaGenre[]
   favorites   Favorite[]
+  ratings     Rating[]
+  @@index([title])
 }
 
 model MediaGenre {
@@ -44,18 +79,83 @@ model MediaGenre {
   @@unique([mediaId, genreId])
 }
 
+model MediaAsset {
+  id        Int    @id @default(autoincrement())
+  media     Media  @relation(fields: [mediaId], references: [id])
+  mediaId   Int
+  type      String // "video","trailer","thumbnail","subtitle"
+  url       String // S3 URL or CDN URL
+  quality   String? // e.g. 720p,1080p
+  language  String? // for subtitles
+}
+
+model Season {
+  id       Int      @id @default(autoincrement())
+  media    Media    @relation(fields: [mediaId], references: [id])
+  mediaId  Int
+  number   Int
+  episodes Episode[]
+  @@unique([mediaId, number])
+}
+
+model Episode {
+  id        Int     @id @default(autoincrement())
+  season    Season  @relation(fields: [seasonId], references: [id])
+  seasonId  Int
+  number    Int
+  title     String
+  duration  Int?
+  assets    MediaAsset[]
+  @@unique([seasonId, number])
+}
+
 model Favorite {
-  id        Int      @id @default(autoincrement())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int
-  media     Media    @relation(fields: [mediaId], references: [id])
+  id        Int     @id @default(autoincrement())
+  profile   Profile @relation(fields: [profileId], references: [id])
+  profileId Int
+  media     Media   @relation(fields: [mediaId], references: [id])
   mediaId   Int
   createdAt DateTime @default(now())
-
-  @@unique([userId, mediaId])
+  @@unique([profileId, mediaId])
 }
 
-enum MediaType {
-  MOVIE
-  SERIES
+model WatchHistory {
+  id          Int      @id @default(autoincrement())
+  profile     Profile  @relation(fields: [profileId], references: [id])
+  profileId   Int
+  media       Media    @relation(fields: [mediaId], references: [id])
+  mediaId     Int
+  episodeId   Int?     // optional if tracking episodes
+  playedAt    DateTime @default(now())
+  position    Int      @default(0) // seconds position
+  @@index([profileId, mediaId])
 }
+
+model Rating {
+  id        Int    @id @default(autoincrement())
+  profile   Profile @relation(fields: [profileId], references: [id])
+  profileId Int
+  media     Media   @relation(fields: [mediaId], references: [id])
+  mediaId   Int
+  value     Int    // 1..5 or 1..10
+  createdAt DateTime @default(now())
+  @@unique([profileId, mediaId])
+}
+
+model Person {
+  id   Int    @id @default(autoincrement())
+  name String
+  bio  String?
+  roles Cast[]
+}
+
+model Cast {
+  id        Int    @id @default(autoincrement())
+  media     Media  @relation(fields: [mediaId], references: [id])
+  mediaId   Int
+  person    Person @relation(fields: [personId], references: [id])
+  personId  Int
+  role      String // actor, director, writer...
+  character String? // if actor
+}
+
