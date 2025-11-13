@@ -8,6 +8,7 @@ const JWT_EXPIRES_IN = '7d';
 
 // Regex de validación de contraseña: al menos 5 caracteres y una mayúscula
 const PASSWORD_REGEX = /^(?=.*[A-Z]).{5,}$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Función helper para normalizar emails
 function normalizeEmail(email) {
@@ -25,7 +26,9 @@ async function signup(req, res) {
       return res.status(400).json({ error: 'Email y contraseña requeridos' });
 
     email = email.toLowerCase().trim();
-
+    if (!EMAIL_REGEX.test(email)) {
+      return res.status(400).json({ error: 'El email no es válido' });
+    }
     // Verificar si ya existe el usuario (email en minúsculas)
     const existingUser = await prisma.user.findUnique({
       where: { email }
