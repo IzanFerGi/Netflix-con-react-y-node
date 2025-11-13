@@ -1,0 +1,122 @@
+/* src/styles/Login.css */
+
+/* Contenedor con fondo SOLO para la página de login */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: url('../assets/images/fondo.jpg') center center / cover no-repeat;
+}
+
+/* Overlay oscuro para que el formulario destaque */
+.auth-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55); /* ajusta opacidad si quieres más/menos oscuro */
+  z-index: 0;
+}
+
+/* Formulario por encima del overlay */
+.auth-form {
+  position: relative;
+  z-index: 1;
+  width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px;
+  border-radius: 10px;
+  background: rgba(20,20,20,0.85);
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+}
+
+/* Mensaje de error simple (sin background de imagen) */
+.auth-error {
+  color: #ffdddd;
+  background: #5a0b0b;
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+
+/* Inputs y botones dentro del formulario */
+.auth-form input {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background: #222;
+  color: #fff;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.btn-submit {
+  background: var(--netflix-red, #e50914);
+  border: none;
+  color: #fff;
+  padding: 0.9rem;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: 700;
+  transition: background .18s ease, transform .12s ease;
+}
+
+.btn-submit:active { transform: translateY(1px); }
+.btn-submit[disabled] { opacity: .65; cursor: not-allowed; }
+
+/* Link estilo botón (registro/volver) */
+.link-button {
+  background: none;
+  border: none;
+  color: var(--primary, #fff);
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+}
+
+/* Botón elegante "volver al inicio" -- usa id="boton_inicio" */
+#boton_inicio {
+  margin-top: 12px;
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #e50914;
+  background: transparent;
+  color: #e50914;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+#boton_inicio:hover {
+  background: #e50914;
+  color: white;
+  box-shadow: 0 0 18px rgba(229,9,20,0.45);
+  transform: translateY(-2px);
+}
+
+/* Accesibilidad: clases utilitarias */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Pequeños ajustes responsive */
+@media (max-width: 420px) {
+  .auth-form { width: calc(100% - 36px); padding: 18px; }
+  #boton_inicio { font-size: 0.92rem; }
+}
