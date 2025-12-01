@@ -100,7 +100,23 @@
   border: none;
   background: transparent;
   color: #b3b3b3;
-  font-size: 0.8rem;
+  font-size: 0.8rem;.start-nav-links {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.start-nav-links button {
+  background: transparent;
+  border: none;
+  color: #e5e5e5;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.start-nav-links button:hover {
+  color: #fff;
+}
+
   cursor: pointer;
   padding: 0;
 }
@@ -183,7 +199,7 @@
 
 
 .start-main {
-  margin-top: -3rem;
+  margin-top: 2.5rem;     
   padding: 0 4vw 3rem;
 }
 
@@ -324,7 +340,115 @@
   }
 }
 
+.start-nav-links {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.start-nav-links button {
+  background: transparent;
+  border: none;
+  color: #e5e5e5;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.start-nav-links button:hover {
+  color: #fff;
+}
 
 
 
 
+
+/* ... lo que ya tenías ... */
+
+/* Barra superior (logo + nav + usuario) */
+.start-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.start-logo {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.start-logo span {
+  color: #e50914;
+}
+
+.start-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.start-avatar-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: linear-gradient(145deg, #e50914, #f5a623);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.start-user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+}
+
+.start-user-name {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.start-logout-btn {
+  border: none;
+  background: transparent;
+  color: #b3b3b3;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.start-logout-btn:hover {
+  color: #fff;
+}
+
+/* Nav links dentro del header */
+.start-nav-links {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.start-nav-links button {
+  background: transparent;
+  border: none;
+  color: #e5e5e5;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.start-nav-links button:hover {
+  color: #fff;
+}
+
+.start-nav-links button.active {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Hero más pequeño para Movies/Series/Favorites */
+.start-hero--small {
+  height: 35vh;
+  min-height: 260px;
+}

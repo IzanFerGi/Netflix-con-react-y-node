@@ -1,11 +1,10 @@
 // src/pages/Start.jsx
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import AppHeader from '../components/AppHeader';
 import '../styles/Start.css';
 
-
-// Ejemplo de secciones mock (puedes sustituir con API real)
 const MOCK_SECTIONS = [
   {
     id: 'trending',
@@ -19,34 +18,17 @@ const MOCK_SECTIONS = [
   },
 ];
 
-
 export default function Start() {
-  const { user, logout } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-
-  // Si no hay usuario → no puede estar aquí
   useEffect(() => {
     if (!user) {
       navigate('/login', { replace: true });
     }
   }, [user, navigate]);
 
-
   if (!user) return null;
-
-
-  const firstLetter = useMemo(
-    () => (user.name?.[0] || user.email?.[0] || '?').toUpperCase(),
-    [user]
-  );
-
-
-  const handleLogout = () => {
-    logout();            // borra token + usuario
-    navigate('/', { replace: true }); // vuelve al home
-  };
-
 
   return (
     <div className="start-page">
@@ -54,32 +36,9 @@ export default function Start() {
       <header className="start-hero">
         <div className="start-hero-overlay" />
 
-
         <div className="start-hero-content">
-          {/* Top bar personalizada */}
-          <div className="start-top-bar">
-            <div className="start-logo">Netflix <span>Clone</span></div>
-
-
-            <div className="start-user">
-              <div className="start-avatar-circle">{firstLetter}</div>
-              <div className="start-user-info">
-                <span className="start-user-name">
-                  {user.name || user.email}
-                </span>
-
-
-                {/* 🔥 Aquí el botón de Cerrar sesión */}
-                <button
-                  className="start-logout-btn"
-                  onClick={handleLogout}
-                >
-                  Cerrar sesión
-                </button>
-              </div>
-            </div>
-          </div>
-
+          {/* Cabecera común */}
+          <AppHeader />
 
           {/* Hero text */}
           <div className="start-hero-main">
@@ -88,17 +47,25 @@ export default function Start() {
               Disfruta de tus series y películas favoritas.
             </p>
 
-
             <div className="start-hero-actions">
-              <button className="btn btn-primary">Reproducir</button>
-              <button className="btn btn-secondary">Mi lista</button>
+              <button
+                className="btn btn-primary"
+                onClick={() => navigate('/movies')}
+              >
+                Ver películas
+              </button>
+              <button
+                className="btn btn-secondary"
+                onClick={() => navigate('/favorites')}
+              >
+                Mis favoritos
+              </button>
             </div>
           </div>
         </div>
       </header>
 
-
-      {/* SECCIONES */}
+      {/* SECCIONES MOCK */}
       <main className="start-main">
         {MOCK_SECTIONS.map((section) => (
           <section key={section.id} className="start-row">
@@ -127,8 +94,3 @@ export default function Start() {
     </div>
   );
 }
-
-
-
-
-
