@@ -71,8 +71,8 @@ export default function Signup() {
           </button>
         </p>
 
-        {/* 🔥 Botón para volver al inicio */}
-        <button id="boton_inicio"type="button" className="back-home" onClick={() => navigate('/')}>
+        {/*Botón para volver al inicio */}
+        <button id="boton_inicio"type="button" className="back-home" onClick={() => navigate('/start')}>
           ⬅ Volver al inicio
         </button>
 
