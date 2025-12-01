@@ -25,7 +25,7 @@ export default function Login() {
 
     try {
       await login(normalized, password);
-      navigate('/', { replace: true });
+      navigate('/start', { replace: true });
     } catch (err) {
       const msg = err?.response?.data?.error || 'Error al iniciar sesión';
       setError(msg);
@@ -59,7 +59,7 @@ export default function Login() {
           </button>
         </p>
 
-        {/* 🔥 Nuevo botón */}
+        {/* Nuevo botón */}
         <button type="button" id="boton_inicio"className="back-home" onClick={() => navigate('/')}>
           ⬅ Volver al inicio
         </button>
