@@ -89,9 +89,6 @@ Auth
 Media
 - GET /media
 - GET /media/:id
-- POST /media (admin)
-- PUT /media/:id (admin)
-- DELETE /media/:id (admin)
 
 Favorites
 - GET /favorites
