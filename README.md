@@ -2,7 +2,7 @@ Netflix Clone – Full Stack Web App (React + Node.js + PostgreSQL + Prisma)
 
 Aplicación Full Stack inspirada en Netflix, desarrollada con arquitectura MVC, autenticación con JWT, gestión de perfiles y catálogo multimedia. El proyecto simula un entorno real de producción, con contenedores Docker, servidor Nginx y base de datos relacional.
 
-Incluye login/registro, sistema de favoritos, filtrado por género, detalle de contenido y panel de administración básico.
+Incluye login/registro, sistema de favoritos, filtrado por género y detalle de contenido.
 
 ---
 
