@@ -1,53 +1,144 @@
-Proyecto Fullstack MERN-like moderno, inspirado en Netflix, construido con tecnologías de producción y estructura MVC limpia.
-Permite registro/login de usuarios, gestión de perfiles, listado de películas y series, y sistema de favoritos, todo respaldado por una base de datos relacional robusta.
+Netflix Clone – Full Stack Web App (React + Node.js + PostgreSQL + Prisma)
 
-Stack Tecnológico
----Frontend---
+Aplicación Full Stack inspirada en Netflix, desarrollada con arquitectura MVC, autenticación con JWT, gestión de perfiles y catálogo multimedia. El proyecto simula un entorno real de producción, con contenedores Docker, servidor Nginx y base de datos relacional.
 
-React + Vite → SPA moderna, rápida y optimizada.
+Incluye login/registro, sistema de favoritos, filtrado por género, detalle de contenido y panel de administración básico.
 
-React Router DOM → Navegación entre vistas (Home, Login, Signup, Detail).
+---
 
-Context API → Gestión global de autenticación y favoritos.
+Funcionalidades principales
 
-Axios → Cliente HTTP para consumir la API REST.
+Registro e inicio de sesión con JWT  
+Gestión de favoritos por usuario  
+Perfiles independientes  
+Catálogo de películas/series (listado, detalle, búsqueda y filtros por género)  
+Validaciones  
+Arquitectura MVC  
+Base de datos relacional optimizada  
+Docker Compose para entorno completo  
 
-Vite env → Variables de entorno y configuración flexible.
+---
 
-(Opcional) TailwindCSS → Estilos limpios y responsive.
+Tecnologías utilizadas
 
----Backend---
+Frontend
+- React + Vite
+- React Router DOM
+- Context API (auth & favoritos)
+- Axios
+- Variables de entorno (.env)
 
-Node.js + Express → Servidor REST con arquitectura MVC.
+Backend
+- Node.js + Express
+- Arquitectura MVC
+- Prisma ORM
+- JWT (auth)
+- bcryptjs
+- CORS, dotenv, morgan
 
-Prisma ORM → Capa de acceso a datos tipada y segura.
+Base de datos
+- PostgreSQL
+- Prisma migrate (control de esquema)
 
-bcryptjs → Hash de contraseñas para autenticación segura.
+Infraestructura
+- Docker Compose (frontend + backend + db)
+- Nginx como reverse proxy
+- Imágenes Alpine
+- Variables de entorno separadas
 
-jsonwebtoken (JWT) → Sistema de login con tokens.
+---
 
-CORS + dotenv + morgan → Seguridad, configuración y logs.
 
----Base de Datos---
+- MVC en backend  
+- Separación entre lógica, rutas, controladores y capa de datos
+- Servicios reutilizables
+- Middlewares de autenticación (JWT)
 
-PostgreSQL → Base de datos relacional con esquema complejo (usuarios, perfiles, medios, géneros, favoritos, historial, valoraciones...).
+---
 
-Prisma Migrate → Control de versiones del esquema y migraciones automáticas.
+Autenticación y seguridad
 
----Infraestructura / DevOps---
+- Hash de contraseñas con bcrypt
+- JWT Access Tokens
+- Middleware de validación
+- Rutas protegidas
+- Gestión de sesión en frontend con Context API
 
-Docker Compose → Orquesta todos los servicios (frontend, backend, base de datos).
+---
 
-Nginx → Servidor reverse proxy para el build del frontend (producción).
+Base de datos
 
-Node:20 + Alpine → Imágenes ligeras y optimizadas para el backend y frontend.
+Modelo relacional con tablas como:
+- usuarios
+- perfiles
+- contenido multimedia
+- géneros
+- favoritos
+- historial
 
-.env management → Configuración segura de credenciales (DB, JWT, etc.).
+Migraciones gestionadas con Prisma Migrate
 
----Entorno de Desarrollo---
+---
 
-Ubuntu (VirtualBox) → Entorno Linux limpio para desarrollo y despliegue.
+Endpoints principales
 
-Visual Studio Code → Editor principal conectado con GitHub.
+Auth
+- POST /auth/register
+- POST /auth/login
 
-Git + GitHub → Control de versiones y despliegue continuo.
+Media
+- GET /media
+- GET /media/:id
+- POST /media (admin)
+- PUT /media/:id (admin)
+- DELETE /media/:id (admin)
+
+Favorites
+- GET /favorites
+- POST /favorites/:id
+- DELETE /favorites/:id
+
+---
+
+Capturas
+- Inicio
+  <img width="1852" height="849" alt="image" src="https://github.com/user-attachments/assets/0ec80ab0-67bf-434f-b934-237829d46400" />
+- Registro
+  <img width="1859" height="894" alt="image" src="https://github.com/user-attachments/assets/a4ab8919-0b2a-4ad7-ac54-6cb6be137096" />
+- Login
+  <img width="1852" height="888" alt="image" src="https://github.com/user-attachments/assets/88619b53-a582-4374-9f53-fb0f1905ddad" />
+-Error 404 custom
+<img width="1854" height="891" alt="image" src="https://github.com/user-attachments/assets/70ce4c71-84d1-4b22-b022-3afbb54b94d0" />
+- Listado de películas
+- Detalle de contenido
+- Gestión de favoritos
+
+---
+
+Instalación local
+
+Requisitos:
+- Docker y Docker Compose
+- git clone https://github.com/IzanFerGi/Netflix-con-react-y-node
+- cd Netflix-con-react-y-node
+- docker compose up --build
+
+
+Frontend: http://localhost:80  
+Backend: http://localhost:3000  
+DB: localhost:5432
+
+
+---
+
+Desarrollador
+**Izan Ferrer Gimeno**
+
+- Full Stack Web Developer (DAW)
+- React · Node.js · SQL · MVC · Docker
+- Github: https://github.com/IzanFerGi
+
+---
+
+
+
