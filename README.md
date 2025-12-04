@@ -11,7 +11,7 @@ Funcionalidades principales
 Registro e inicio de sesión con JWT  
 Gestión de favoritos por usuario  
 Perfiles independientes  
-Catálogo de películas/series (listado, detalle, búsqueda y filtros por género)  
+Catálogo de películas/series
 Validaciones  
 Arquitectura MVC  
 Base de datos relacional optimizada  
