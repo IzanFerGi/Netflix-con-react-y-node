@@ -1,25 +1,46 @@
 // src/pages/Movies.jsx
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import AppHeader from '../components/AppHeader';
+
+import GenreFilter from '../components/GenreFilter';
+
 import '../styles/Start.css';
 import '../styles/MediaList.css';
 
 export default function Movies() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+
   const [items, setItems] = useState([]);
   const [favoriteIds, setFavoriteIds] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Géneros disponibles (mismos que en el seed)
+  const allGenres = [
+    "Acción",
+    "Drama",
+    "Terror",
+    "Ciencia Ficción",
+    "Comedia",
+    "Romance",
+    "Fantasia",
+    "Aventura",
+  ];
+
+  // Estado del género seleccionado (null = todos)
+  const [selectedGenre, setSelectedGenre] = useState(null);
+
+  // Si no hay user → fuera
   useEffect(() => {
     if (!user) {
       navigate('/login', { replace: true });
     }
   }, [user, navigate]);
 
+  // Cargar catálogo + favoritos
   useEffect(() => {
     if (!user) return;
 
@@ -42,6 +63,8 @@ export default function Movies() {
     load();
   }, [user]);
 
+  if (!user) return null;
+
   const isFavorite = (id) => favoriteIds.includes(id);
 
   async function toggleFavorite(mediaId) {
@@ -58,7 +81,13 @@ export default function Movies() {
     }
   }
 
-  if (!user) return null;
+  // FILTRADO FINAL
+  const filteredItems = useMemo(() => {
+    if (!selectedGenre) return items;
+    return items.filter((m) =>
+      m.genres.some((mg) => mg.genre?.name === selectedGenre)
+    );
+  }, [items, selectedGenre]);
 
   return (
     <div className="start-page">
@@ -76,14 +105,26 @@ export default function Movies() {
       </header>
 
       <main className="start-main">
+
+        {/* FILTRO DE GÉNEROS */}
+        {!loading && (
+          <GenreFilter
+            genres={allGenres}
+            active={selectedGenre}
+            onChange={setSelectedGenre}
+          />
+        )}
+
+        {/* LISTA */}
         {loading ? (
           <div className="medialist-loading">Cargando películas...</div>
         ) : (
           <div className="medialist-grid">
-            {items.map((m) => {
+            {filteredItems.map((m) => {
               const genres = (m.genres || [])
                 .map((mg) => mg.genre?.name)
                 .join(', ');
+
               return (
                 <article key={m.id} className="media-card">
                   <div className="media-thumb-wrapper">
@@ -93,8 +134,10 @@ export default function Movies() {
                       className="media-thumb"
                     />
                   </div>
+
                   <h3>{m.title}</h3>
                   <p className="media-genre">{genres}</p>
+
                   <button
                     className={`media-fav-btn ${isFavorite(m.id) ? 'active' : ''}`}
                     onClick={() => toggleFavorite(m.id)}

@@ -5,6 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import AppHeader from '../components/AppHeader';
 import '../styles/Start.css';
 
+
 const MOCK_SECTIONS = [
   {
     id: 'trending',

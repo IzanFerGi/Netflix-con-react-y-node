@@ -55,23 +55,25 @@ model Genre {
 }
 
 model Media {
-  id          Int          @id @default(autoincrement())
-  title       String
-  description String?
-  type        MediaType
-  year        Int?
-  duration    Int?
-  createdAt   DateTime     @default(now())
-  slug        String?      @unique
-  assets      MediaAsset[]      // inverse relation for MediaAsset.media
-  seasons     Season[]
-  genres      MediaGenre[]
-  favorites   Favorite[]
-  ratings     Rating[]
-  watchHistory WatchHistory[]   // inverse for WatchHistory.media
-  casts       Cast[]            // inverse for Cast.media
-  @@index([title])
+  id            Int          @id @default(autoincrement())
+  title         String
+  description   String?
+  type          MediaType
+  year          Int?
+  duration      Int?
+  createdAt     DateTime     @default(now())
+  slug          String?      @unique
+
+  posterUrl     String?      
+  assets        MediaAsset[]
+  seasons       Season[]
+  genres        MediaGenre[]
+  favorites     Favorite[]
+  ratings       Rating[]
+  watchHistory  WatchHistory[]
+  casts         Cast[]
 }
+
 
 model MediaGenre {
   id       Int   @id @default(autoincrement())

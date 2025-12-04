@@ -1,18 +1,34 @@
 // src/pages/Series.jsx
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import AppHeader from '../components/AppHeader';
+import GenreFilter from '../components/GenreFilter';
+
 import '../styles/Start.css';
 import '../styles/MediaList.css';
 
 export default function Series() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+
   const [items, setItems] = useState([]);
   const [favoriteIds, setFavoriteIds] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const allGenres = [
+    'Acción',
+    'Drama',
+    'Terror',
+    'Ciencia Ficción',
+    'Comedia',
+    'Romance',
+    'Fantasia',
+    'Aventura',
+  ];
+
+  const [selectedGenre, setSelectedGenre] = useState(null);
 
   useEffect(() => {
     if (!user) {
@@ -42,6 +58,8 @@ export default function Series() {
     load();
   }, [user]);
 
+  if (!user) return null;
+
   const isFavorite = (id) => favoriteIds.includes(id);
 
   async function toggleFavorite(mediaId) {
@@ -58,7 +76,12 @@ export default function Series() {
     }
   }
 
-  if (!user) return null;
+  const filteredItems = useMemo(() => {
+    if (!selectedGenre) return items;
+    return items.filter((m) =>
+      m.genres.some((mg) => mg.genre?.name === selectedGenre)
+    );
+  }, [items, selectedGenre]);
 
   return (
     <div className="start-page">
@@ -76,14 +99,23 @@ export default function Series() {
       </header>
 
       <main className="start-main">
+        {!loading && (
+          <GenreFilter
+            genres={allGenres}
+            active={selectedGenre}
+            onChange={setSelectedGenre}
+          />
+        )}
+
         {loading ? (
           <div className="medialist-loading">Cargando series...</div>
         ) : (
           <div className="medialist-grid">
-            {items.map((m) => {
+            {filteredItems.map((m) => {
               const genres = (m.genres || [])
                 .map((mg) => mg.genre?.name)
                 .join(', ');
+
               return (
                 <article key={m.id} className="media-card">
                   <div className="media-thumb-wrapper">
@@ -93,8 +125,10 @@ export default function Series() {
                       className="media-thumb"
                     />
                   </div>
+
                   <h3>{m.title}</h3>
                   <p className="media-genre">{genres}</p>
+
                   <button
                     className={`media-fav-btn ${isFavorite(m.id) ? 'active' : ''}`}
                     onClick={() => toggleFavorite(m.id)}
