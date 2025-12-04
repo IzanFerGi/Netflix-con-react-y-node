@@ -1,47 +1,87 @@
 // src/pages/Start.jsx
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import api from '../services/api';
+
 import AppHeader from '../components/AppHeader';
 import '../styles/Start.css';
-
-
-const MOCK_SECTIONS = [
-  {
-    id: 'trending',
-    title: 'Tendencias',
-    items: [
-      { id: 1, title: 'Película 1', thumb: '/media/trending1.jpg' },
-      { id: 2, title: 'Película 2', thumb: '/media/trending2.jpg' },
-      { id: 3, title: 'Película 3', thumb: '/media/trending3.jpg' },
-      { id: 4, title: 'Película 4', thumb: '/media/trending4.jpg' },
-    ],
-  },
-];
+import '../styles/MediaList.css';
 
 export default function Start() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const [movies, setMovies] = useState([]);
+  const [series, setSeries] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // proteger la ruta
   useEffect(() => {
     if (!user) {
       navigate('/login', { replace: true });
     }
   }, [user, navigate]);
 
+  // cargar TODO el catálogo de pelis y series
+  useEffect(() => {
+    if (!user) return;
+
+    async function load() {
+      try {
+        const [moviesRes, seriesRes] = await Promise.all([
+          api.get('/api/media', { params: { type: 'MOVIE' } }),
+          api.get('/api/media', { params: { type: 'SERIES' } }),
+        ]);
+
+        setMovies(moviesRes.data);
+        setSeries(seriesRes.data);
+      } catch (error) {
+        console.error('Error cargando contenido para Start', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    load();
+  }, [user]);
+
   if (!user) return null;
+
+  // helper para dibujar una fila horizontal tipo Netflix
+  function renderRow(title, items) {
+    if (!items.length) return null;
+
+    return (
+      <section className="start-row">
+        <h2 className="start-row-title">{title}</h2>
+        <div className="start-row-scroller">
+          {items.map((m) => (
+            <article key={m.id} className="start-card">
+              <div className="start-card-thumb-wrapper">
+                <img
+                  src={m.posterUrl || '/media/default_poster.jpg'}
+                  alt={m.title}
+                  className="start-card-thumb"
+                  loading="lazy"
+                />
+              </div>
+              <h3 className="start-card-title">{m.title}</h3>
+            </article>
+          ))}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <div className="start-page">
       {/* HERO */}
       <header className="start-hero">
         <div className="start-hero-overlay" />
-
         <div className="start-hero-content">
-          {/* Cabecera común */}
           <AppHeader />
 
-          {/* Hero text */}
           <div className="start-hero-main">
             <h1 className="start-hero-title">Bienvenido de nuevo</h1>
             <p className="start-hero-subtitle">
@@ -66,31 +106,16 @@ export default function Start() {
         </div>
       </header>
 
-      {/* SECCIONES MOCK */}
+      {/* FILAS HORIZONTALES */}
       <main className="start-main">
-        {MOCK_SECTIONS.map((section) => (
-          <section key={section.id} className="start-row">
-            <h2 className="start-row-title">{section.title}</h2>
-            <div className="start-row-scroller">
-              {section.items.map((item) => (
-                <article key={item.id} className="start-card">
-                  <div className="start-card-thumb-wrapper">
-                    <img
-                      src={item.thumb}
-                      alt={item.title}
-                      className="start-card-thumb"
-                      loading="lazy"
-                    />
-                    <div className="start-card-overlay">
-                      <button className="start-card-play">▶</button>
-                    </div>
-                  </div>
-                  <h3 className="start-card-title">{item.title}</h3>
-                </article>
-              ))}
-            </div>
-          </section>
-        ))}
+        {loading ? (
+          <div className="medialist-loading">Cargando catálogo...</div>
+        ) : (
+          <>
+            {renderRow('Películas recomendadas', movies)}
+            {renderRow('Series recomendadas', series)}
+          </>
+        )}
       </main>
     </div>
   );
