@@ -51,7 +51,6 @@ export default function App() {
           }
         />
 
-        {/* resto de páginas */}
         <Route path="/start" element={<Start />} />
         <Route path="/movies" element={<Movies />} />
         <Route path="/series" element={<Series />} />

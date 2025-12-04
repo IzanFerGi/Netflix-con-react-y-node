@@ -1,5 +1,3 @@
-/* src/styles/Home.css */
-
 .home-container {
   position: relative;
   min-height: 100vh;
@@ -11,8 +9,6 @@
   text-align: center;
   overflow: hidden;
 }
-
-/* Sobre la home puedes usar un overlay más sutil o imagen secundaria */
 .home-overlay {
   position: absolute;
   inset: 0;

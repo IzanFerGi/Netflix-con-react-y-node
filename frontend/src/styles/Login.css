@@ -1,6 +1,3 @@
-/* src/styles/Login.css */
-
-/* Contenedor con fondo SOLO para la página de login */
 .auth-container {
   display: flex;
   justify-content: center;
@@ -11,12 +8,12 @@
   background: url('../assets/images/fondo.jpg') center center / cover no-repeat;
 }
 
-/* Overlay oscuro para que el formulario destaque */
+
 .auth-container::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.55); /* ajusta opacidad si quieres más/menos oscuro */
+  background: rgba(0,0,0,0.55); 
   z-index: 0;
 }
 
@@ -35,7 +32,6 @@
   box-shadow: 0 10px 30px rgba(0,0,0,0.45);
 }
 
-/* Mensaje de error simple (sin background de imagen) */
 .auth-error {
   color: #ffdddd;
   background: #5a0b0b;

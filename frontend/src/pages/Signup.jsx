@@ -1,4 +1,3 @@
-// src/pages/Signup.jsx
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -70,8 +69,6 @@ export default function Signup() {
             Inicia sesión
           </button>
         </p>
-
-        {/*Botón para volver al inicio */}
         <button id="boton_inicio"type="button" className="back-home" onClick={() => navigate('/')}>
           ⬅ Volver al inicio
         </button>

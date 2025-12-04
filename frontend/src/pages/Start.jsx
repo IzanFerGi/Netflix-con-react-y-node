@@ -1,4 +1,3 @@
-// src/pages/Start.jsx
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
@@ -48,7 +47,6 @@ export default function Start() {
 
   if (!user) return null;
 
-  // helper para dibujar una fila horizontal tipo Netflix
   function renderRow(title, items) {
     if (!items.length) return null;
 
@@ -105,8 +103,6 @@ export default function Start() {
           </div>
         </div>
       </header>
-
-      {/* FILAS HORIZONTALES */}
       <main className="start-main">
         {loading ? (
           <div className="medialist-loading">Cargando catálogo...</div>

@@ -33,7 +33,7 @@ export default function Movies() {
   // Estado del género seleccionado (null = todos)
   const [selectedGenre, setSelectedGenre] = useState(null);
 
-  // Si no hay user → fuera
+  // Si no hay user = fuera
   useEffect(() => {
     if (!user) {
       navigate('/login', { replace: true });
@@ -115,7 +115,6 @@ export default function Movies() {
           />
         )}
 
-        {/* LISTA */}
         {loading ? (
           <div className="medialist-loading">Cargando películas...</div>
         ) : (

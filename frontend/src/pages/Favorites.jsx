@@ -1,4 +1,3 @@
-// src/pages/Favorites.jsx
 import React, { useEffect, useState, useContext, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';

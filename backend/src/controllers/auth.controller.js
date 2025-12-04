@@ -1,4 +1,3 @@
-// src/controllers/auth.controller.js
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const prisma = require('../prismaClient');
@@ -6,17 +5,15 @@ const prisma = require('../prismaClient');
 const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret';
 const JWT_EXPIRES_IN = '7d';
 
-// Regex de validación de contraseña: al menos 5 caracteres y una mayúscula
 const PASSWORD_REGEX = /^(?=.*[A-Z]).{5,}$/;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// Función helper para normalizar emails
+
 function normalizeEmail(email) {
   if (!email || typeof email !== 'string') return '';
   return email.trim().toLowerCase();
 }
 
-// Registro de usuario
 // Registro de usuario
 async function signup(req, res) {
   try {
@@ -73,7 +70,6 @@ async function login(req, res) {
 
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
-      // No decir "email no existe" para evitar enumeración de usuarios
       return res.status(401).json({ error: 'Credenciales inválidas' });
     }
 

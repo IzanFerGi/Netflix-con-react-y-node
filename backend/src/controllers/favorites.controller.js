@@ -1,4 +1,3 @@
-// src/controllers/favorites.controller.js
 const prisma = require('../prismaClient');
 
 // Crea o obtiene el perfil "Principal" para un usuario
