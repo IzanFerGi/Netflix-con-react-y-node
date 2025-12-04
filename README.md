@@ -108,10 +108,18 @@ Capturas
 - Login
   <img width="1852" height="888" alt="image" src="https://github.com/user-attachments/assets/88619b53-a582-4374-9f53-fb0f1905ddad" />
 -Error 404 custom
-<img width="1854" height="891" alt="image" src="https://github.com/user-attachments/assets/70ce4c71-84d1-4b22-b022-3afbb54b94d0" />
+  <img width="1854" height="891" alt="image" src="https://github.com/user-attachments/assets/70ce4c71-84d1-4b22-b022-3afbb54b94d0" />
+-Start de la pagina
+  <img width="1856" height="893" alt="image" src="https://github.com/user-attachments/assets/c5d43d7a-537d-4a99-9a91-eb74d31ffdd8" />
 - Listado de películas
+  <img width="1855" height="892" alt="image" src="https://github.com/user-attachments/assets/98605623-3eb8-4c15-b202-11e0f9f3afb9" />
+- Listado de series
+  <img width="1856" height="898" alt="image" src="https://github.com/user-attachments/assets/351708be-c46d-4e84-8e2f-e8b9b471d507" />
 - Detalle de contenido
+  <img width="1853" height="890" alt="image" src="https://github.com/user-attachments/assets/9cb9cf29-0e50-477c-97af-63a10ebae539" />
+  <img width="1855" height="889" alt="image" src="https://github.com/user-attachments/assets/5c159bea-8c8e-4047-98b2-e0696ec0b35e" />
 - Gestión de favoritos
+  <img width="1854" height="890" alt="image" src="https://github.com/user-attachments/assets/6c2bce03-10dd-4119-868c-db655202f72f" />
 
 ---
 
